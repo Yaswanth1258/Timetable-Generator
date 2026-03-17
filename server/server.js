@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import connectDB from './config/db.js';
@@ -10,7 +12,9 @@ import timetableRoutes from './routes/timetableRoutes.js';
 import requestRoutes from './routes/requestRoutes.js';
 
 // Load env vars
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 // Connect to database
 await connectDB();
