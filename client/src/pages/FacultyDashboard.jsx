@@ -29,7 +29,7 @@ const FacultyDashboard = () => {
         };
         if (user) fetchTimetables();
 
-        const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000');
+        const socket = io(import.meta.env.VITE_API_URL);
         socket.on('request_updated', (data) => {
             if(data.faculty?._id === user?._id) {
                  toast(data.status === 'APPROVED' ? 'Your request was APPROVED!' : 'Your request was REJECTED', {

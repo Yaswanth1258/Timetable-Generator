@@ -46,8 +46,7 @@ const TimetableViewer = ({ timetableId, filterUserFacultyId, enableLiveUpdates =
     useEffect(() => {
         if (!timetableId) return;
 
-        const socket = io('http://localhost:5000');
-
+        const socket = io(import.meta.env.VITE_API_URL);
         socket.on('timetable_updated', (data) => {
             if (data.timetableId === timetableId) {
                 // Auto-refresh data
