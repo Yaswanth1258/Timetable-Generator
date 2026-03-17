@@ -12,7 +12,7 @@ const AdminRequests = () => {
     useEffect(() => {
         fetchRequests();
 
-        const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000');
+        const socket = io(import.meta.env.VITE_API_URL);
         socket.on('new_request', (data) => {
             toast('New Faculty Request Received!', { icon: '🔔' });
             fetchRequests(); 

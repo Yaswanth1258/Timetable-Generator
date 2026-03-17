@@ -21,7 +21,7 @@ const AdminUsers = () => {
     useEffect(() => {
         fetchData();
 
-        const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000');
+        const socket = io(import.meta.env.VITE_API_URL );
         socket.on('users_updated', (data) => {
             fetchData(); // Simplest way to ensure fully populated data
         });
