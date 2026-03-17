@@ -5,4 +5,9 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  preview: {
+    host: '0.0.0.0',   // IMPORTANT
+    port: process.env.PORT,       // fixed port
+    allowedHosts: 'all' // easiest & safest for now
+  }
 })
