@@ -18,7 +18,16 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 
 // Connect to database
 await connectDB();
+require('dotenv').config();
 
+const mongoose = require('mongoose');
+
+// ✅ Put debug here
+console.log("MONGO_URI:", process.env.MONGO_URI);
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("DB Connected"))
+  .catch(err => console.log(err));
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
