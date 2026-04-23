@@ -1,4 +1,4 @@
-import { generateTimetable } from '../scheduler/greedyScheduler.js';
+import { generateTimetable } from '../scheduler/timetableScheduler.js';
 import Timetable from '../models/Timetable.js';
 import TimeSlot from '../models/TimeSlot.js';
 

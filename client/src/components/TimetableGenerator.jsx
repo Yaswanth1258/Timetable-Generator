@@ -149,7 +149,7 @@ const TimetableGenerator = ({ onGenerate }) => {
                 <Sparkles size={32} className="text-white/80" />
                 <div>
                     <h2 className="text-2xl font-bold mb-1">Timetable Generator</h2>
-                    <p className="text-indigo-100 text-sm">Genetic Algorithm + Constraint Satisfaction Problem</p>
+                    <p className="text-indigo-100 text-sm">Constraint-Aware Timetable Scheduling</p>
                 </div>
             </div>
 

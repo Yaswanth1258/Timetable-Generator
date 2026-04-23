@@ -2,7 +2,7 @@
 
 ## Critical Issues Fixed
 
-### 1. **Timetable Generation Engine (greedyScheduler.js)**
+### 1. **Timetable Generation Engine (timetableScheduler.js)**
 ✅ **Fixed**: Scheduler now generates full day timetables
 - Added flexibility to handle constrained scenarios
 - Increased max attempts from limited to 1000+ attempts
@@ -56,9 +56,9 @@ TimetableGenerator.jsx sends POST to /api/timetable/generate
     ↓
 timetableController.triggerTimetableGeneration validates input
     ↓
-For each department: calls greedyScheduler.generateTimetable()
+For each department: calls timetableScheduler.generateTimetable()
     ↓
-greedyScheduler creates timetable, schedules all entries
+timetableScheduler creates timetable, schedules all entries
     ↓
 Returns fully populated timetable to controller
     ↓
@@ -114,7 +114,7 @@ Ensure you have:
 
 ## Files Modified
 
-1. `server/scheduler/greedyScheduler.js` - Enhanced scheduling algorithm
+1. `server/scheduler/timetableScheduler.js` - Enhanced scheduling algorithm
 2. `server/controllers/timetableController.js` - Fixed parameter passing and data population
 3. `client/src/components/TimetableViewer.jsx` - Better error handling
 4. `client/src/pages/AdminLiveUpdates.jsx` - Improved error states and loading
