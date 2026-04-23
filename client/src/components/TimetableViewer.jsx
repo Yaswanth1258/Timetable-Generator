@@ -46,15 +46,35 @@ const TimetableViewer = ({ timetableId, filterUserFacultyId, enableLiveUpdates =
     useEffect(() => {
         if (!timetableId) return;
 
+        const fetchLatestTimetable = async () => {
+            try {
+                const { data } = await api.get(`/timetable/${timetableId}`);
+                setTimetable(data);
+            } catch (err) {
+                console.error('Error refreshing timetable:', err);
+            }
+        };
+
         const socket = io(import.meta.env.VITE_API_URL);
         socket.on('timetable_updated', (data) => {
             if (data.timetableId === timetableId) {
-                // Auto-refresh data
-                api.get(`/timetable/${timetableId}`).then(res => setTimetable(res.data));
+                fetchLatestTimetable();
             }
         });
 
+        const handleFocus = () => {
+            fetchLatestTimetable();
+        };
+
+        window.addEventListener('focus', handleFocus);
+
+        const refreshTimer = window.setInterval(() => {
+            fetchLatestTimetable();
+        }, 15000);
+
         return () => {
+            window.removeEventListener('focus', handleFocus);
+            window.clearInterval(refreshTimer);
             socket.disconnect();
         };
     }, [timetableId]);

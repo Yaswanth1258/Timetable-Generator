@@ -36,7 +36,19 @@ const StudentDashboard = () => {
             fetchTimetables();
         });
 
+        const handleFocus = () => {
+            fetchTimetables();
+        };
+
+        window.addEventListener('focus', handleFocus);
+
+        const refreshTimer = window.setInterval(() => {
+            fetchTimetables();
+        }, 15000);
+
         return () => {
+            window.removeEventListener('focus', handleFocus);
+            window.clearInterval(refreshTimer);
             socket.disconnect();
         };
     }, []);
