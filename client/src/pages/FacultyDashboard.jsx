@@ -15,18 +15,24 @@ const FacultyDashboard = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
+        const applyPublishedTimetables = (published) => {
+            setTimetables(published);
+            setTimetableId(prevId => {
+                if (prevId && published.some(t => t._id === prevId)) return prevId;
+                return published.length > 0 ? published[0]._id : '';
+            });
+        };
+
         const fetchTimetables = async () => {
             try {
                 const { data } = await api.get('/timetable');
                 const published = data.filter(t => t.status === 'PUBLISHED');
-                setTimetables(published);
-                if (published.length > 0) {
-                    setTimetableId(published[0]._id);
-                }
+                applyPublishedTimetables(published);
             } catch (err) {
                 console.error(err);
             }
         };
+
         if (user) fetchTimetables();
 
         const socket = io(import.meta.env.VITE_API_URL);
@@ -36,6 +42,10 @@ const FacultyDashboard = () => {
                      icon: data.status === 'APPROVED' ? '✅' : '❌',
                  });
             }
+        });
+
+        socket.on('timetable_updated', () => {
+            fetchTimetables();
         });
 
         return () => {

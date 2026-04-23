@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import TimetableViewer from '../components/TimetableViewer';
 import { AuthContext } from '../context/AuthContext';
 import api from '../services/api';
+import { io } from 'socket.io-client';
 
 const StudentDashboard = () => {
     const { user } = useContext(AuthContext);
@@ -10,19 +11,34 @@ const StudentDashboard = () => {
     const [timetableId, setTimetableId] = useState('');
 
     useEffect(() => {
+        const applyPublishedTimetables = (published) => {
+            setTimetables(published);
+            setTimetableId(prevId => {
+                if (prevId && published.some(t => t._id === prevId)) return prevId;
+                return published.length > 0 ? published[0]._id : '';
+            });
+        };
+
         const fetchTimetables = async () => {
             try {
                 const { data } = await api.get('/timetable');
-                let published = data.filter(t => t.status === 'PUBLISHED');
-                setTimetables(published);
-                if (published.length > 0) {
-                    setTimetableId(published[0]._id);
-                }
+                const published = data.filter(t => t.status === 'PUBLISHED');
+                applyPublishedTimetables(published);
             } catch (err) {
                 console.error(err);
             }
         };
+
         fetchTimetables();
+
+        const socket = io(import.meta.env.VITE_API_URL);
+        socket.on('timetable_updated', () => {
+            fetchTimetables();
+        });
+
+        return () => {
+            socket.disconnect();
+        };
     }, []);
 
     // Get unique departments and semesters for the filters
