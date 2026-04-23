@@ -16,10 +16,21 @@ const FacultyDashboard = () => {
 
     useEffect(() => {
         const applyPublishedTimetables = (published) => {
-            setTimetables(published);
+            const sortedPublished = [...published].sort((a, b) => {
+                const aTime = new Date(a.updatedAt || a.createdAt || 0).getTime();
+                const bTime = new Date(b.updatedAt || b.createdAt || 0).getTime();
+                return bTime - aTime;
+            });
+
+            setTimetables(sortedPublished);
             setTimetableId(prevId => {
-                if (prevId && published.some(t => t._id === prevId)) return prevId;
-                return published.length > 0 ? published[0]._id : '';
+                const latestId = sortedPublished.length > 0 ? sortedPublished[0]._id : '';
+                if (!prevId) return latestId;
+
+                const current = sortedPublished.find(t => t._id === prevId);
+                if (!current) return latestId;
+
+                return current._id === latestId ? prevId : latestId;
             });
         };
 
